@@ -1,0 +1,901 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/multi-style-layer.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/Perimetro_1.js"></script>
+        <script src="data/EspacioCultural_2.js"></script>
+        <script src="data/PlazaSeca_3.js"></script>
+        <script src="data/Sendero5_4.js"></script>
+        <script src="data/Sendero4_5.js"></script>
+        <script src="data/Sendero2_6.js"></script>
+        <script src="data/Sendero1_7.js"></script>
+        <script src="data/Senderodeentrada_8.js"></script>
+        <script src="data/SenderoPrincipal_9.js"></script>
+        <script src="data/SenderoPrincipala_10.js"></script>
+        <script src="data/AccesodesdeFCyT_11.js"></script>
+        <script src="data/FacultadeCienciayTecnologia_12.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:false, maxZoom:28, minZoom:1
+        }).fitBounds([[-31.836457442622507,-60.553006583326585],[-31.822347153574103,-60.523092770543975]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        // remove popup's row if "visible-with-data"
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        // add class to format popup if it contains media
+		function addClassToPopupIfMedia(content, popup) {
+			var tempDiv = document.createElement('div');
+			tempDiv.innerHTML = content;
+			if (tempDiv.querySelector('td img')) {
+				popup._contentNode.classList.add('media');
+					// Delay to force the redraw
+					setTimeout(function() {
+						popup.update();
+					}, 10);
+			} else {
+				popup._contentNode.classList.remove('media');
+			}
+		}
+        var zoomControl = L.control.zoom({
+            position: 'topleft'
+        }).addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_Argenmaptopografico_0');
+        map.getPane('pane_Argenmaptopografico_0').style.zIndex = 400;
+        var layer_Argenmaptopografico_0 = L.tileLayer('https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/mapabase_topo@EPSG:3857@png/{z}/{x}/{-y}.png', {
+            pane: 'pane_Argenmaptopografico_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 18
+        });
+        layer_Argenmaptopografico_0;
+        map.addLayer(layer_Argenmaptopografico_0);
+        function pop_Perimetro_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td class="visible-with-data" id="Name">' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Perimetro_1_0() {
+            return {
+                pane: 'pane_Perimetro_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '3.0,6.0',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Perimetro_1');
+        map.getPane('pane_Perimetro_1').style.zIndex = 401;
+        map.getPane('pane_Perimetro_1').style['mix-blend-mode'] = 'normal';
+        var layer_Perimetro_1 = new L.geoJson(json_Perimetro_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Perimetro_1',
+            layerName: 'layer_Perimetro_1',
+            pane: 'pane_Perimetro_1',
+            onEachFeature: pop_Perimetro_1,
+            style: style_Perimetro_1_0,
+        });
+        bounds_group.addLayer(layer_Perimetro_1);
+        map.addLayer(layer_Perimetro_1);
+        function pop_EspacioCultural_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td class="visible-with-data" id="Name">' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_EspacioCultural_2_0() {
+            return {
+                pane: 'pane_EspacioCultural_2',
+                opacity: 1,
+                color: 'rgba(138,201,38,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_EspacioCultural_2');
+        map.getPane('pane_EspacioCultural_2').style.zIndex = 402;
+        map.getPane('pane_EspacioCultural_2').style['mix-blend-mode'] = 'normal';
+        var layer_EspacioCultural_2 = new L.geoJson(json_EspacioCultural_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_EspacioCultural_2',
+            layerName: 'layer_EspacioCultural_2',
+            pane: 'pane_EspacioCultural_2',
+            onEachFeature: pop_EspacioCultural_2,
+            style: style_EspacioCultural_2_0,
+        });
+        bounds_group.addLayer(layer_EspacioCultural_2);
+        map.addLayer(layer_EspacioCultural_2);
+        function pop_PlazaSeca_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td class="visible-with-data" id="Name">' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_PlazaSeca_3_0() {
+            return {
+                pane: 'pane_PlazaSeca_3',
+                opacity: 1,
+                color: 'rgba(39,209,67,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_PlazaSeca_3');
+        map.getPane('pane_PlazaSeca_3').style.zIndex = 403;
+        map.getPane('pane_PlazaSeca_3').style['mix-blend-mode'] = 'normal';
+        var layer_PlazaSeca_3 = new L.geoJson(json_PlazaSeca_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_PlazaSeca_3',
+            layerName: 'layer_PlazaSeca_3',
+            pane: 'pane_PlazaSeca_3',
+            onEachFeature: pop_PlazaSeca_3,
+            style: style_PlazaSeca_3_0,
+        });
+        bounds_group.addLayer(layer_PlazaSeca_3);
+        map.addLayer(layer_PlazaSeca_3);
+        function pop_Sendero5_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td class="visible-with-data" id="Name">' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Sendero5_4_0() {
+            return {
+                pane: 'pane_Sendero5_4',
+                opacity: 1,
+                color: 'rgba(201,117,76,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        function style_Sendero5_4_1() {
+            return {
+                pane: 'pane_Sendero5_4',
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Sendero5_4');
+        map.getPane('pane_Sendero5_4').style.zIndex = 404;
+        map.getPane('pane_Sendero5_4').style['mix-blend-mode'] = 'normal';
+        var layer_Sendero5_4 = new L.geoJson.multiStyle(json_Sendero5_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Sendero5_4',
+            layerName: 'layer_Sendero5_4',
+            pane: 'pane_Sendero5_4',
+            onEachFeature: pop_Sendero5_4,
+            styles: [style_Sendero5_4_0,style_Sendero5_4_1,]
+        });
+        bounds_group.addLayer(layer_Sendero5_4);
+        map.addLayer(layer_Sendero5_4);
+        function pop_Sendero4_5(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td class="visible-with-data" id="Name">' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Sendero4_5_0() {
+            return {
+                pane: 'pane_Sendero4_5',
+                opacity: 1,
+                color: 'rgba(231,255,15,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        function style_Sendero4_5_1() {
+            return {
+                pane: 'pane_Sendero4_5',
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Sendero4_5');
+        map.getPane('pane_Sendero4_5').style.zIndex = 405;
+        map.getPane('pane_Sendero4_5').style['mix-blend-mode'] = 'normal';
+        var layer_Sendero4_5 = new L.geoJson.multiStyle(json_Sendero4_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Sendero4_5',
+            layerName: 'layer_Sendero4_5',
+            pane: 'pane_Sendero4_5',
+            onEachFeature: pop_Sendero4_5,
+            styles: [style_Sendero4_5_0,style_Sendero4_5_1,]
+        });
+        bounds_group.addLayer(layer_Sendero4_5);
+        map.addLayer(layer_Sendero4_5);
+        function pop_Sendero2_6(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td class="visible-with-data" id="Name">' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Sendero2_6_0() {
+            return {
+                pane: 'pane_Sendero2_6',
+                opacity: 1,
+                color: 'rgba(237,101,119,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        function style_Sendero2_6_1() {
+            return {
+                pane: 'pane_Sendero2_6',
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Sendero2_6');
+        map.getPane('pane_Sendero2_6').style.zIndex = 406;
+        map.getPane('pane_Sendero2_6').style['mix-blend-mode'] = 'normal';
+        var layer_Sendero2_6 = new L.geoJson.multiStyle(json_Sendero2_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Sendero2_6',
+            layerName: 'layer_Sendero2_6',
+            pane: 'pane_Sendero2_6',
+            onEachFeature: pop_Sendero2_6,
+            styles: [style_Sendero2_6_0,style_Sendero2_6_1,]
+        });
+        bounds_group.addLayer(layer_Sendero2_6);
+        map.addLayer(layer_Sendero2_6);
+        function pop_Sendero1_7(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td class="visible-with-data" id="Name">' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Sendero1_7_0() {
+            return {
+                pane: 'pane_Sendero1_7',
+                opacity: 1,
+                color: 'rgba(210,34,219,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        function style_Sendero1_7_1() {
+            return {
+                pane: 'pane_Sendero1_7',
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Sendero1_7');
+        map.getPane('pane_Sendero1_7').style.zIndex = 407;
+        map.getPane('pane_Sendero1_7').style['mix-blend-mode'] = 'normal';
+        var layer_Sendero1_7 = new L.geoJson.multiStyle(json_Sendero1_7, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Sendero1_7',
+            layerName: 'layer_Sendero1_7',
+            pane: 'pane_Sendero1_7',
+            onEachFeature: pop_Sendero1_7,
+            styles: [style_Sendero1_7_0,style_Sendero1_7_1,]
+        });
+        bounds_group.addLayer(layer_Sendero1_7);
+        map.addLayer(layer_Sendero1_7);
+        function pop_Senderodeentrada_8(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td class="visible-with-data" id="Name">' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Senderodeentrada_8_0() {
+            return {
+                pane: 'pane_Senderodeentrada_8',
+                opacity: 1,
+                color: 'rgba(227,26,28,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        function style_Senderodeentrada_8_1() {
+            return {
+                pane: 'pane_Senderodeentrada_8',
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Senderodeentrada_8');
+        map.getPane('pane_Senderodeentrada_8').style.zIndex = 408;
+        map.getPane('pane_Senderodeentrada_8').style['mix-blend-mode'] = 'normal';
+        var layer_Senderodeentrada_8 = new L.geoJson.multiStyle(json_Senderodeentrada_8, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Senderodeentrada_8',
+            layerName: 'layer_Senderodeentrada_8',
+            pane: 'pane_Senderodeentrada_8',
+            onEachFeature: pop_Senderodeentrada_8,
+            styles: [style_Senderodeentrada_8_0,style_Senderodeentrada_8_1,]
+        });
+        bounds_group.addLayer(layer_Senderodeentrada_8);
+        map.addLayer(layer_Senderodeentrada_8);
+        function pop_SenderoPrincipal_9(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td class="visible-with-data" id="Name">' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_SenderoPrincipal_9_0() {
+            return {
+                pane: 'pane_SenderoPrincipal_9',
+                opacity: 1,
+                color: 'rgba(51,160,44,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        function style_SenderoPrincipal_9_1() {
+            return {
+                pane: 'pane_SenderoPrincipal_9',
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_SenderoPrincipal_9');
+        map.getPane('pane_SenderoPrincipal_9').style.zIndex = 409;
+        map.getPane('pane_SenderoPrincipal_9').style['mix-blend-mode'] = 'normal';
+        var layer_SenderoPrincipal_9 = new L.geoJson.multiStyle(json_SenderoPrincipal_9, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_SenderoPrincipal_9',
+            layerName: 'layer_SenderoPrincipal_9',
+            pane: 'pane_SenderoPrincipal_9',
+            onEachFeature: pop_SenderoPrincipal_9,
+            styles: [style_SenderoPrincipal_9_0,style_SenderoPrincipal_9_1,]
+        });
+        bounds_group.addLayer(layer_SenderoPrincipal_9);
+        map.addLayer(layer_SenderoPrincipal_9);
+        function pop_SenderoPrincipala_10(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td class="visible-with-data" id="Name">' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_SenderoPrincipala_10_0() {
+            return {
+                pane: 'pane_SenderoPrincipala_10',
+                opacity: 1,
+                color: 'rgba(51,160,44,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        function style_SenderoPrincipala_10_1() {
+            return {
+                pane: 'pane_SenderoPrincipala_10',
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_SenderoPrincipala_10');
+        map.getPane('pane_SenderoPrincipala_10').style.zIndex = 410;
+        map.getPane('pane_SenderoPrincipala_10').style['mix-blend-mode'] = 'normal';
+        var layer_SenderoPrincipala_10 = new L.geoJson.multiStyle(json_SenderoPrincipala_10, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_SenderoPrincipala_10',
+            layerName: 'layer_SenderoPrincipala_10',
+            pane: 'pane_SenderoPrincipala_10',
+            onEachFeature: pop_SenderoPrincipala_10,
+            styles: [style_SenderoPrincipala_10_0,style_SenderoPrincipala_10_1,]
+        });
+        bounds_group.addLayer(layer_SenderoPrincipala_10);
+        map.addLayer(layer_SenderoPrincipala_10);
+        function pop_AccesodesdeFCyT_11(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td class="visible-with-data" id="Name">' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_AccesodesdeFCyT_11_0() {
+            return {
+                pane: 'pane_AccesodesdeFCyT_11',
+                opacity: 1,
+                color: 'rgba(31,120,180,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        function style_AccesodesdeFCyT_11_1() {
+            return {
+                pane: 'pane_AccesodesdeFCyT_11',
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_AccesodesdeFCyT_11');
+        map.getPane('pane_AccesodesdeFCyT_11').style.zIndex = 411;
+        map.getPane('pane_AccesodesdeFCyT_11').style['mix-blend-mode'] = 'normal';
+        var layer_AccesodesdeFCyT_11 = new L.geoJson.multiStyle(json_AccesodesdeFCyT_11, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_AccesodesdeFCyT_11',
+            layerName: 'layer_AccesodesdeFCyT_11',
+            pane: 'pane_AccesodesdeFCyT_11',
+            onEachFeature: pop_AccesodesdeFCyT_11,
+            styles: [style_AccesodesdeFCyT_11_0,style_AccesodesdeFCyT_11_1,]
+        });
+        bounds_group.addLayer(layer_AccesodesdeFCyT_11);
+        map.addLayer(layer_AccesodesdeFCyT_11);
+        function pop_FacultadeCienciayTecnologia_12(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Facultad</th>\
+                        <td class="visible-with-data" id="Facultad">' + (feature.properties['Facultad'] !== null ? autolinker.link(String(feature.properties['Facultad']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_FacultadeCienciayTecnologia_12_0() {
+            return {
+                pane: 'pane_FacultadeCienciayTecnologia_12',
+                radius: 8.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(72,123,182,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_FacultadeCienciayTecnologia_12');
+        map.getPane('pane_FacultadeCienciayTecnologia_12').style.zIndex = 412;
+        map.getPane('pane_FacultadeCienciayTecnologia_12').style['mix-blend-mode'] = 'normal';
+        var layer_FacultadeCienciayTecnologia_12 = new L.geoJson(json_FacultadeCienciayTecnologia_12, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_FacultadeCienciayTecnologia_12',
+            layerName: 'layer_FacultadeCienciayTecnologia_12',
+            pane: 'pane_FacultadeCienciayTecnologia_12',
+            onEachFeature: pop_FacultadeCienciayTecnologia_12,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_FacultadeCienciayTecnologia_12_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_FacultadeCienciayTecnologia_12);
+        map.addLayer(layer_FacultadeCienciayTecnologia_12);
+        var overlaysTree = [
+            {label: '<img src="legend/FacultadeCienciayTecnologia_12.png" /> Faculta de Ciencia y Tecnologia', layer: layer_FacultadeCienciayTecnologia_12},
+            {label: '<img src="legend/AccesodesdeFCyT_11.png" /> Acceso desde FCyT', layer: layer_AccesodesdeFCyT_11},
+            {label: '<img src="legend/SenderoPrincipala_10.png" /> Sendero Principala', layer: layer_SenderoPrincipala_10},
+            {label: '<img src="legend/SenderoPrincipal_9.png" /> Sendero Principal', layer: layer_SenderoPrincipal_9},
+            {label: '<img src="legend/Senderodeentrada_8.png" /> Sendero de entrada', layer: layer_Senderodeentrada_8},
+            {label: '<img src="legend/Sendero1_7.png" /> Sendero 1', layer: layer_Sendero1_7},
+            {label: '<img src="legend/Sendero2_6.png" /> Sendero 2', layer: layer_Sendero2_6},
+            {label: '<img src="legend/Sendero4_5.png" /> Sendero 4', layer: layer_Sendero4_5},
+            {label: '<img src="legend/Sendero5_4.png" /> Sendero 5', layer: layer_Sendero5_4},
+            {label: '<img src="legend/PlazaSeca_3.png" /> Plaza Seca', layer: layer_PlazaSeca_3},
+            {label: '<img src="legend/EspacioCultural_2.png" /> Espacio Cultural', layer: layer_EspacioCultural_2},
+            {label: '<img src="legend/Perimetro_1.png" /> Perimetro', layer: layer_Perimetro_1},
+            {label: "Argenmap topografico", layer: layer_Argenmaptopografico_0},]
+        var lay = L.control.layers.tree(null, overlaysTree,{
+            //namedToggle: true,
+            //selectorBack: false,
+            //closedSymbol: '&#8862; &#x1f5c0;',
+            //openedSymbol: '&#8863; &#x1f5c1;',
+            //collapseAll: 'Collapse all',
+            //expandAll: 'Expand all',
+            collapsed: true,
+        });
+        lay.addTo(map);
+        setBounds();
+        var i = 0;
+        layer_Perimetro_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Perimetro_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_EspacioCultural_2.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_EspacioCultural_2'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_PlazaSeca_3.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_PlazaSeca_3'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_Sendero5_4.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Sendero5_4'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_Sendero4_5.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Sendero4_5'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_Sendero2_6.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Sendero2_6'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_Sendero1_7.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Sendero1_7'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_Senderodeentrada_8.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Senderodeentrada_8'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_SenderoPrincipal_9.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_SenderoPrincipal_9'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_SenderoPrincipala_10.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_SenderoPrincipala_10'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_AccesodesdeFCyT_11.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #ffffff; font-size: 10pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_AccesodesdeFCyT_11'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_FacultadeCienciayTecnologia_12.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Facultad'] !== null?String('<div style="color: #ffffff; font-size: 12pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['Facultad']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_FacultadeCienciayTecnologia_12'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        resetLabels([layer_Perimetro_1,layer_EspacioCultural_2,layer_PlazaSeca_3,layer_Sendero5_4,layer_Sendero4_5,layer_Sendero2_6,layer_Sendero1_7,layer_Senderodeentrada_8,layer_SenderoPrincipal_9,layer_SenderoPrincipala_10,layer_AccesodesdeFCyT_11,layer_FacultadeCienciayTecnologia_12]);
+        map.on("zoomend", function(){
+            resetLabels([layer_Perimetro_1,layer_EspacioCultural_2,layer_PlazaSeca_3,layer_Sendero5_4,layer_Sendero4_5,layer_Sendero2_6,layer_Sendero1_7,layer_Senderodeentrada_8,layer_SenderoPrincipal_9,layer_SenderoPrincipala_10,layer_AccesodesdeFCyT_11,layer_FacultadeCienciayTecnologia_12]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_Perimetro_1,layer_EspacioCultural_2,layer_PlazaSeca_3,layer_Sendero5_4,layer_Sendero4_5,layer_Sendero2_6,layer_Sendero1_7,layer_Senderodeentrada_8,layer_SenderoPrincipal_9,layer_SenderoPrincipala_10,layer_AccesodesdeFCyT_11,layer_FacultadeCienciayTecnologia_12]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_Perimetro_1,layer_EspacioCultural_2,layer_PlazaSeca_3,layer_Sendero5_4,layer_Sendero4_5,layer_Sendero2_6,layer_Sendero1_7,layer_Senderodeentrada_8,layer_SenderoPrincipal_9,layer_SenderoPrincipala_10,layer_AccesodesdeFCyT_11,layer_FacultadeCienciayTecnologia_12]);
+        });
+        </script>
+    </body>
+</html>
